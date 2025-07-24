@@ -38,7 +38,7 @@ module Shape
         delegate_property(from)
       end
     end
-    
+   
     def from(&block)
       if with = options[:with]
         define_from do
@@ -48,23 +48,23 @@ module Shape
         define_from(&block)
       end
     end
-    
+   
     def define_from(&block)
       unless shaper_context.method_defined?(name.to_sym)
         shaper_context.send(:define_method, name, &block)
       end
     end
-    
+   
     def with(&block)
       define_block(:with, &block)
     end
-    
+   
     def each_with(&block)
       define_block(:each_with, &block)
     end
-    
+   
     protected
-    
+   
     def define_block(type, &block)
       options[type] = Class.new do
         include Shape
@@ -72,7 +72,7 @@ module Shape
       end
       define_accessor(name, options[:from] || name)
     end
-    
+   
     def define_accessor(name, source_name)
       return if shaper_context.method_defined?(name.to_sym)
       options = self.options
