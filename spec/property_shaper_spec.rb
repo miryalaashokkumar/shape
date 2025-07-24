@@ -251,7 +251,7 @@ describe Shape::PropertyShaper do
         }
 
         it 'exposes and shapes each child element of the property with the provided decorator' do
-          expect(subject.dependents.map(&:name)).to eq([ 'Joseph Smith', 'Janet Smith' ])
+          expect(subject.dependents.map(&:name)).to eq([ 'Joseph Smith', 'Janet Smith'])
         end
       end
     end
@@ -574,7 +574,7 @@ describe Shape::PropertyShaper do
         { name: 'Adam' }
       ]
       instance = ParentDecorator.new({ children: unsorted })
-      expect(instance.children.map(&:name)).to eq([ 'Adam', 'Zoe' ])
+      expect(instance.children.map(&:name)).to eq(['Adam', 'Zoe'])
     end
   end
 end
