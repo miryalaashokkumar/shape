@@ -507,3 +507,132 @@ describe Shape::PropertyShaper do
   end
 
 end
+
+require 'ostruct'
+
+RSpec.describe Shape::PropertyShaper do
+  let(:context_class) do
+    Class.new do
+      include Shape::Base
+      attr_accessor :_source
+    end
+  end
+  
+  let(:source) do
+    OpenStruct.new(name: 'Alice', age: 42)
+  end
+  
+  let(:hash_source) do
+    {
+      'name' => 'Bob',
+      :age => 30
+    }
+  end
+  
+  describe 'value resolution' do
+    it 'resolves value from object method' do
+      context_class.class_eval do
+        property :name
+      end
+      instance = context_class.new
+      instance._source = source
+      
+      expect(instance.name).to eq('Alice')
+    end
+    
+    it 'resolves value from hash using symbol key' do
+      context_class.class_eval do
+        property :age
+      end
+      instance = context_class.new
+      instance._source = hash_source
+      
+      expect(instance.age).to eq(30)
+    end
+    
+    it 'resolves value from hash using string key fallback' do
+      context_class.class_eval do
+        property :name
+      end
+      instance = context_class.new
+      instance._source = hash_source
+      
+      expect(instance.name).to eq('Bob')
+    end
+    
+    it 'returns nil when key is not found' do
+      context_class.class_eval do
+        property :missing
+      end
+      instance = context_class.new
+      instance._source = hash_source
+      
+      expect(instance.missing).to be_nil
+    end
+    
+    it 'resolves using custom from alias' do
+      context_class.class_eval do
+        property :nickname, from: :name
+      end
+      instance = context_class.new
+      instance._source = source
+      
+      expect(instance.nickname).to eq('Alice')
+    end
+  end
+  
+  describe 'with and each_with' do
+    before do
+      stub_const('SimpleDecorator', Class.new do
+        include Shape::Base
+        property :name
+      end)
+      
+      stub_const('ParentDecorator', Class.new do
+        include Shape::Base
+      end)
+    end
+    
+    it 'shapes nested object with with: decorator' do
+      ParentDecorator.class_eval do
+        property :child, with: SimpleDecorator
+      end
+      
+      instance = ParentDecorator.new({ child: { name: 'Charlie' } })
+      
+      expect(instance.child).to be_a(SimpleDecorator)
+      expect(instance.child.name).to eq('Charlie')
+    end
+    
+    it 'shapes collection with each_with: decorator' do
+      ParentDecorator.class_eval do
+        property :children, each_with: SimpleDecorator
+      end
+      
+      children = [
+        { name: 'Zoe' },
+        { name: 'Adam' }
+      ]
+      
+      instance = ParentDecorator.new({ children: children })
+      
+      expect(instance.children.map(&:name)).to contain_exactly('Zoe', 'Adam')
+    end
+    
+    it 'sorts shaped collection by provided attribute' do
+      ParentDecorator.class_eval do
+        property :children, each_with: SimpleDecorator, sort_by: :name
+      end
+      
+      unsorted = [
+        { name: 'Zoe' },
+        { name: 'Adam' }
+      ]
+      
+      instance = ParentDecorator.new({ children: unsorted })
+      
+      expect(instance.children.map(&:name)).to eq(['Adam', 'Zoe'])
+    end
+  end
+end
+
