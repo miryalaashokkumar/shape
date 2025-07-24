@@ -33,8 +33,8 @@ module Shape
       if block
         instance_eval(&block)
       else from = options[:from] || name
-      define_accessor(name, from)
-      delegate_property(from)
+        define_accessor(name, from)
+        delegate_property(from)
       end
     end
 

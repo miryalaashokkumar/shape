@@ -276,7 +276,7 @@ describe Shape::PropertyShaper do
         }
 
         it 'exposes and shapes each child element of the property with the provided decorator' do
-          expect(subject.children.map(&:name)).to eq([ 'Jimmy Smith', 'Jane Smith' ])
+          expect(subject.children.map(&:name)).to eq(['Jimmy Smith', 'Jane Smith'])
         end
       end
     end
@@ -375,18 +375,18 @@ describe Shape::PropertyShaper do
 
         it 'exposes the nested properties' do
           expect(subject.to_hash[:dependents]).to eq({
-                                                       spouse: {
-                                                         name: 'Sally Smith'
-                                                       },
-                                                       children: [
-                                                         {
-                                                           name: 'Jimmy Smith'
-                                                         },
-                                                         {
-                                                           name: 'Jane Smith'
-                                                         }
-                                                       ]
-                                                     })
+            spouse: {
+               name: 'Sally Smith'
+            },
+            children: [
+              {
+                name: 'Jimmy Smith'
+              },
+              {
+                name: 'Jane Smith'
+               }
+            ]
+          })
         end
       end
     end
