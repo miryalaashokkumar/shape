@@ -1,4 +1,5 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
+require 'ostruct'
 
 describe Shape::PropertyShaper do
 
@@ -461,8 +462,6 @@ describe Shape::PropertyShaper do
   end
 end
 
-require 'ostruct'
-
 RSpec.describe Shape::PropertyShaper do
   let(:context_class) do
     Class.new do
@@ -484,7 +483,6 @@ RSpec.describe Shape::PropertyShaper do
 
   describe 'value resolution' do
     it 'resolves value from object method' do
-
       context_class.class_eval do
         property :name
       end
@@ -495,7 +493,6 @@ RSpec.describe Shape::PropertyShaper do
     end
 
     it 'resolves value from hash using symbol key' do
-
       context_class.class_eval do
         property :age
       end
@@ -506,7 +503,6 @@ RSpec.describe Shape::PropertyShaper do
     end
 
     it 'resolves value from hash using string key fallback' do
-
       context_class.class_eval do
         property :name
       end
@@ -517,7 +513,6 @@ RSpec.describe Shape::PropertyShaper do
     end
 
     it 'returns nil when key is not found' do
-
       context_class.class_eval do
         property :missing
       end
@@ -528,7 +523,6 @@ RSpec.describe Shape::PropertyShaper do
     end
 
     it 'resolves using custom from alias' do
-
       context_class.class_eval do
         property :nickname, from: :name
       end
@@ -551,7 +545,6 @@ RSpec.describe Shape::PropertyShaper do
     end
 
     it 'shapes nested object with with: decorator' do
-
       ParentDecorator.class_eval do
         property :child, with: SimpleDecorator
       end
@@ -562,7 +555,6 @@ RSpec.describe Shape::PropertyShaper do
     end
 
     it 'shapes collection with each_with: decorator' do
-
       ParentDecorator.class_eval do
         property :children, each_with: SimpleDecorator
       end
@@ -576,7 +568,6 @@ RSpec.describe Shape::PropertyShaper do
     end
 
     it 'sorts shaped collection by provided attribute' do
-
       ParentDecorator.class_eval do
         property :children, each_with: SimpleDecorator, sort_by: :name
       end
