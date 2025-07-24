@@ -51,7 +51,6 @@ describe Shape::PropertyShaper do
         end
       end
     end
-
   end
 
   context 'Given a hash with attributes' do
@@ -83,7 +82,6 @@ describe Shape::PropertyShaper do
           property :name
           property :years_of_age, from: :age
         end)
-
       end
 
       context 'when shaped by the decorator' do
@@ -105,7 +103,6 @@ describe Shape::PropertyShaper do
           expect(subject).to_not respond_to(:age)
         end
       end
-
     end
 
     context 'and a Shape decorator property with each_with: option' do
@@ -115,12 +112,10 @@ describe Shape::PropertyShaper do
           include Shape::Base
           property :name
         end)
-
         stub_const('MockDecorator', Class.new do
           include Shape::Base
           property :children, each_with: ChildDecorator
         end)
-
       end
 
       context 'when shaped by the decorator' do
@@ -132,7 +127,6 @@ describe Shape::PropertyShaper do
         it 'exposes and shapes each child element of the property with the provided decorator' do
           expect(subject.children.map(&:name)).to eq(['Jimmy Smith', 'Jane Smith'])
         end
-
       end
 
       context 'and a sort_by: option' do
@@ -153,13 +147,9 @@ describe Shape::PropertyShaper do
           it 'sorts, exposes, and shapes each child element of the property with the provided decorator' do
             expect(subject.children.map(&:name)).to eq(['Jane Smith', 'Jimmy Smith'])
           end
-
         end
-
       end
-
     end
-
 
     context 'and a Shape decorator property with with: option' do
 
@@ -173,7 +163,6 @@ describe Shape::PropertyShaper do
           include Shape::Base
           property :spouse, with: SpouseDecorator
         end)
-
       end
 
       context 'when shaped by the decorator' do
@@ -185,9 +174,7 @@ describe Shape::PropertyShaper do
         it 'exposes and shapes child element of the property with the provided decorator' do
           expect(subject.spouse.name).to eq('Sally Smith')
         end
-
       end
-
     end
 
     context 'and a Shape decorator property with each_with: and from: options' do
@@ -197,7 +184,6 @@ describe Shape::PropertyShaper do
           include Shape::Base
           property :name
         end)
-
         stub_const('MockDecorator', Class.new do
           include Shape::Base
           property :dependents, from: :children, each_with: ChildDecorator
@@ -242,7 +228,6 @@ describe Shape::PropertyShaper do
             ]
           end
         end)
-
       end
 
       context 'when shaped by the decorator' do
@@ -254,9 +239,7 @@ describe Shape::PropertyShaper do
         it 'exposes and shapes each child element of the property with the provided decorator' do
           expect(subject.dependents.map(&:name)).to eq(['Joseph Smith', 'Janet Smith'])
         end
-
       end
-
     end
 
     context 'and a Shape decorator property using a each_with block' do
@@ -270,11 +253,10 @@ describe Shape::PropertyShaper do
             end
           end
         end)
-
       end
 
       context 'when shaped by the decorator' do
-
+        
         subject {
           MockDecorator.new(source)
         }
@@ -282,13 +264,11 @@ describe Shape::PropertyShaper do
         it 'exposes and shapes each child element of the property with the provided decorator' do
           expect(subject.children.map(&:name)).to eq(['Jimmy Smith', 'Jane Smith'])
         end
-
       end
-
     end
 
     context 'and a Shape decorator property using a with block' do
-
+      
       before do
         stub_const('MockDecorator', Class.new do
           include Shape::Base
@@ -298,11 +278,10 @@ describe Shape::PropertyShaper do
             end
           end
         end)
-
       end
 
       context 'when shaped by the decorator' do
-
+        
         subject {
           MockDecorator.new(source)
         }
@@ -310,14 +289,11 @@ describe Shape::PropertyShaper do
         it 'exposes and shapes the child element of the property with the provided decorator' do
           expect(subject.spouse.name).to eq('Sally Smith')
         end
-
       end
-
     end
 
-
     context 'and a Shape decorator property using from: option and a each_with block' do
-
+      
       before do
         stub_const('MockDecorator', Class.new do
           include Shape::Base
@@ -327,11 +303,10 @@ describe Shape::PropertyShaper do
             end
           end
         end)
-
       end
 
       context 'when shaped by the decorator' do
-
+        
         subject {
           MockDecorator.new(source)
         }
@@ -339,13 +314,11 @@ describe Shape::PropertyShaper do
         it 'exposes and shapes each child element of the property with the provided decorator' do
           expect(subject.dependents.map(&:name)).to eq(['Jimmy Smith', 'Jane Smith'])
         end
-
       end
-
     end
 
     context 'and a Shape decorator property using from: option and a with block' do
-
+      
       before do
         stub_const('MockDecorator', Class.new do
           include Shape::Base
@@ -355,21 +328,17 @@ describe Shape::PropertyShaper do
             end
           end
         end)
-
       end
 
       context 'when shaped by the decorator' do
-
+        
         subject {
           MockDecorator.new(source)
         }
-
         it 'exposes and shapes the child element of the property with the provided decorator' do
           expect(subject.wife.name).to eq('Sally Smith')
         end
-
       end
-
     end
 
 
@@ -406,11 +375,8 @@ describe Shape::PropertyShaper do
             ]
           })
         end
-
       end
-
     end
-
   end
 
   context 'Given a hash with string attributes' do
@@ -435,14 +401,13 @@ describe Shape::PropertyShaper do
     end
 
     context 'and a Shape decorator' do
-
+      
       before do
         stub_const('MockDecorator', Class.new do
           include Shape::Base
           property :name
           property :years_of_age, from: :age
         end)
-
       end
 
       context 'when shaped by the decorator' do
@@ -464,7 +429,6 @@ describe Shape::PropertyShaper do
           expect(subject).to_not respond_to(:age)
         end
       end
-
     end
 
     context 'and a Shape decorator property with with: option and a from block' do
@@ -474,7 +438,6 @@ describe Shape::PropertyShaper do
           include Shape
           property :fullname, from: :name
         end)
-
         stub_const('MockDecorator', Class.new do
           include Shape
           property :first_child, with: ChildDecorator do
@@ -483,11 +446,10 @@ describe Shape::PropertyShaper do
             end
           end
         end)
-
       end
 
       context 'when shaped by the decorator' do
-
+        
         subject {
           MockDecorator.new(source)
         }
@@ -499,11 +461,8 @@ describe Shape::PropertyShaper do
         specify do
           expect(subject.to_hash).to eq({first_child: {fullname: 'Jimmy Smith'}})
         end
-
       end
-
     end
-
   end
 
 end
@@ -531,52 +490,58 @@ RSpec.describe Shape::PropertyShaper do
   
   describe 'value resolution' do
     it 'resolves value from object method' do
+      
       context_class.class_eval do
         property :name
       end
+      
       instance = context_class.new
       instance._source = source
-      
       expect(instance.name).to eq('Alice')
     end
     
     it 'resolves value from hash using symbol key' do
+      
       context_class.class_eval do
         property :age
       end
+      
       instance = context_class.new
       instance._source = hash_source
-      
       expect(instance.age).to eq(30)
     end
     
     it 'resolves value from hash using string key fallback' do
+      
       context_class.class_eval do
         property :name
       end
+      
       instance = context_class.new
       instance._source = hash_source
-      
       expect(instance.name).to eq('Bob')
     end
     
     it 'returns nil when key is not found' do
+      
       context_class.class_eval do
         property :missing
       end
+      
       instance = context_class.new
       instance._source = hash_source
-      
       expect(instance.missing).to be_nil
     end
     
     it 'resolves using custom from alias' do
+      
       context_class.class_eval do
         property :nickname, from: :name
       end
+      
+      
       instance = context_class.new
       instance._source = source
-      
       expect(instance.nickname).to eq('Alice')
     end
   end
@@ -587,24 +552,24 @@ RSpec.describe Shape::PropertyShaper do
         include Shape::Base
         property :name
       end)
-      
       stub_const('ParentDecorator', Class.new do
         include Shape::Base
       end)
     end
     
     it 'shapes nested object with with: decorator' do
+      
       ParentDecorator.class_eval do
         property :child, with: SimpleDecorator
       end
       
       instance = ParentDecorator.new({ child: { name: 'Charlie' } })
-      
       expect(instance.child).to be_a(SimpleDecorator)
       expect(instance.child.name).to eq('Charlie')
     end
     
     it 'shapes collection with each_with: decorator' do
+      
       ParentDecorator.class_eval do
         property :children, each_with: SimpleDecorator
       end
@@ -613,13 +578,12 @@ RSpec.describe Shape::PropertyShaper do
         { name: 'Zoe' },
         { name: 'Adam' }
       ]
-      
       instance = ParentDecorator.new({ children: children })
-      
       expect(instance.children.map(&:name)).to contain_exactly('Zoe', 'Adam')
     end
     
     it 'sorts shaped collection by provided attribute' do
+      
       ParentDecorator.class_eval do
         property :children, each_with: SimpleDecorator, sort_by: :name
       end
@@ -628,9 +592,7 @@ RSpec.describe Shape::PropertyShaper do
         { name: 'Zoe' },
         { name: 'Adam' }
       ]
-      
       instance = ParentDecorator.new({ children: unsorted })
-      
       expect(instance.children.map(&:name)).to eq(['Adam', 'Zoe'])
     end
   end

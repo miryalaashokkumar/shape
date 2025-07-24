@@ -26,12 +26,10 @@ module Shape
     attr_accessor :name
     attr_accessor :shaper_context
     attr_accessor :options
-    
     def initialize(shaper_context, name, options={}, &block)
       self.shaper_context = shaper_context
       self.name = name
       self.options = options
-      
       if block
         instance_eval(&block)
       else
@@ -77,9 +75,7 @@ module Shape
     
     def define_accessor(name, source_name)
       return if shaper_context.method_defined?(name.to_sym)
-      
       options = self.options
-      
       define_from do
         # Define helpers inside block for visibility
         fetch_from_hash = ->(source, key) do
@@ -92,7 +88,6 @@ module Shape
         
         fetch_value = ->(name_param, source_name_param, source) do
           source_object = (name_param == source_name_param ? source : self)
-          
           if source_object.respond_to?(source_name_param)
             source_object.send(source_name_param)
           elsif source.respond_to?(:[])
@@ -101,11 +96,8 @@ module Shape
             nil
           end
         end
-        
         return nil unless _source
-        
         result = fetch_value.call(name, source_name, _source)
-        
         if !result.nil? && (with = options[:with])
           with.shape(result, parent: self)
         elsif (each_with = options[:each_with])
