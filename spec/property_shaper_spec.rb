@@ -1,40 +1,35 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe Shape::PropertyShaper do
-  let(:context_class) do
+  let(:context_class) {
     Class.new do
       include Shape::Base
       attr_accessor :_source
     end
-  end
+  }
 
-  let(:source) do
+  let(:source) {
     Struct.new(:name, :age).new('Alice', 42)
-  end
+  }
 
-  let(:hash_source) do
+  let(:hash_source) {
     {
       'name' => 'Bob',
       :age => 30
     }
-  end
+  }
 
   context 'Given an object with method attributes' do
-
     let(:source) {
-      OpenStruct.new.tap do | person |
-        person.name = 'John Smith'
-        person.age = 34
-        person.ssn = 123456789
-        person.children = [
-          OpenStruct.new.tap do | child |
-            child.name = 'Jimmy Smith'
-          end,
-          OpenStruct.new.tap do | child |
-            child.name = 'Jane Smith'
-          end,
+      OpenStruct.new(
+        name: 'John Smith',
+        age: 34,
+        ssn: 123_456_789,
+        children: [
+          OpenStruct.new(name: 'Jimmy Smith'),
+          OpenStruct.new(name: 'Jane Smith')
         ]
-      end
+      )
     }
 
     context 'and a Shape decorator' do
@@ -71,7 +66,7 @@ describe Shape::PropertyShaper do
 
   context 'Given a hash with attributes' do
 
-    let(:source) do
+    let(:source) {
       {
         name: 'John Smith',
         age: 34,
@@ -88,7 +83,7 @@ describe Shape::PropertyShaper do
           name: 'Sally Smith'
         }
       }
-    end
+    }
 
     context 'and a Shape decorator' do
 
@@ -232,12 +227,8 @@ describe Shape::PropertyShaper do
 
           def all_children
             [
-              OpenStruct.new.tap do | child |
-                child.name = 'Joseph Smith'
-              end,
-              OpenStruct.new.tap do | child |
-                child.name = 'Janet Smith'
-              end
+              OpenStruct.new(name: 'Joseph Smith'),
+              OpenStruct.new(name: 'Janet Smith')
             ]
           end
         end)
@@ -393,7 +384,7 @@ describe Shape::PropertyShaper do
 
   context 'Given a hash with string attributes' do
 
-    let(:source) do
+    let(:source) {
       {
         'name' => 'John Smith',
         'age' => 34,
@@ -410,7 +401,7 @@ describe Shape::PropertyShaper do
           'name' => 'Sally Smith'
         }
       }
-    end
+    }
 
     context 'and a Shape decorator' do
 
@@ -478,13 +469,13 @@ describe Shape::PropertyShaper do
   end
 
   context 'value resolution' do
-    let(:source) do
+    let(:source) {
       OpenStruct.new(name: 'Alice', age: 42)
-    end
+    }
 
-    let(:hash_source) do
+    let(:hash_source) {
       { name: 'Bob', age: 30 }
-    end
+    }
 
     let(:instance) { context_class.new }
 
@@ -586,4 +577,3 @@ describe Shape::PropertyShaper do
     end
   end
 end
-
