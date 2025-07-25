@@ -366,7 +366,7 @@ describe Shape::PropertyShaper do
         it 'exposes the nested properties' do
           expect(subject.to_hash[:dependents]).to eq({
             spouse: {
-               name: 'Sally Smith'
+              name: 'Sally Smith'
             },
             children: [
               {
@@ -374,7 +374,7 @@ describe Shape::PropertyShaper do
               },
               {
                 name: 'Jane Smith'
-               }
+              }
             ]
           })
         end
