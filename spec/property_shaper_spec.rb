@@ -27,7 +27,7 @@ describe Shape::PropertyShaper do
         person.age = 34
         person.ssn = 123456789
         person.children = [
-            OpenStruct.new.tap do | child |
+          OpenStruct.new.tap do | child |
             child.name = 'Jimmy Smith'
           end,
           OpenStruct.new.tap do | child |
