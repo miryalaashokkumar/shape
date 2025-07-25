@@ -1,5 +1,4 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
-require 'ostruct'
 
 describe Shape::PropertyShaper do
   let(:context_class) do
@@ -10,7 +9,7 @@ describe Shape::PropertyShaper do
   end
 
   let(:source) do
-    OpenStruct.new(name: 'Alice', age: 42)
+    Struct.new(:name, :age).new('Alice', 42)
   end
 
   let(:hash_source) do
@@ -531,6 +530,10 @@ describe Shape::PropertyShaper do
   end
 
   context 'with and each_with' do
+    let(:children) { [{ name: 'Zoe' }, { name: 'Adam' }] }
+    let(:unsorted) { [{ name: 'Zoe' }, { name: 'Adam' }] }
+    let(:source) { { child: { name: 'Charlie' } } }
+
     before do
       stub_const('SimpleDecorator', Class.new do
         include Shape::Base
@@ -546,7 +549,7 @@ describe Shape::PropertyShaper do
         property :child, with: SimpleDecorator
       end
 
-      instance = ParentDecorator.new({ child: { name: 'Charlie' } })
+      instance = ParentDecorator.new(source)
       expect(instance.child).to be_a(SimpleDecorator)
       expect(instance.child.name).to eq('Charlie')
     end
@@ -556,10 +559,6 @@ describe Shape::PropertyShaper do
         property :children, each_with: SimpleDecorator
       end
 
-      children = [
-        { name: 'Zoe' },
-        { name: 'Adam' }
-      ]
       instance = ParentDecorator.new({ children: children })
       expect(instance.children.map(&:name)).to contain_exactly('Zoe', 'Adam')
     end
@@ -569,10 +568,6 @@ describe Shape::PropertyShaper do
         property :children, each_with: SimpleDecorator, sort_by: :name
       end
 
-      unsorted = [
-        { name: 'Zoe' },
-        { name: 'Adam' }
-      ]
       instance = ParentDecorator.new({ children: unsorted })
       expect(instance.children.map(&:name)).to eq(['Adam', 'Zoe'])
     end
