@@ -534,11 +534,9 @@ describe Shape::PropertyShaper do
 
   context 'with and each_with' do
     let(:children) { [{ name: 'Zoe' }, { name: 'Adam' }] }
-    let(:unsorted) { [{ name: 'Zoe' }, { name: 'Adam' }] }
     let(:source) { { child: { name: 'Charlie' } } }
     let(:instance_one) { ParentDecorator.new(source) }
     let(:instance_two) { ParentDecorator.new(children: children) }
-    let(:instance_three) { ParentDecorator.new(children: unsorted) }
 
     before do
       stub_const('SimpleDecorator', Class.new do
@@ -573,7 +571,7 @@ describe Shape::PropertyShaper do
         property :children, each_with: SimpleDecorator, sort_by: :name
       end
 
-      expect(instance_three.children.map(&:name)).to eq(['Adam', 'Zoe'])
+      expect(instance_two.children.map(&:name)).to eq(['Adam', 'Zoe'])
     end
   end
 end
