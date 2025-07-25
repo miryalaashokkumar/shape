@@ -545,7 +545,6 @@ describe Shape::PropertyShaper do
     let(:children) { [{ name: 'Zoe' }, { name: 'Adam' }] }
     let(:unsorted) { [{ name: 'Zoe' }, { name: 'Adam' }] } # reverse to test sort, if needed
     let(:source) { { child: { name: 'Charlie' } } }
-
     let(:instance_one) { ParentDecorator.new(source) }
     let(:instance_two) { ParentDecorator.new(children: children) }
     let(:instance_three) { ParentDecorator.new(children: unsorted) }
