@@ -32,7 +32,8 @@ module Shape
       self.options = options
       if block
         instance_eval(&block)
-      else from = options[:from] || name
+      else
+        from = options[:from] || name
         define_accessor(name, from)
         delegate_property(from)
       end
@@ -43,7 +44,8 @@ module Shape
         define_from do
           with.shape(instance_eval(&block))
         end
-      else define_from(&block)
+      else
+        define_from(&block)
       end
     end
 
@@ -72,6 +74,7 @@ module Shape
 
     def define_accessor(name, source_name)
       return if shaper_context.method_defined?(name.to_sym)
+      
       options = self.options
       define_from do
         # Define helpers inside block for visibility
@@ -87,16 +90,19 @@ module Shape
             source_object.send(source_name_param)
           elsif source.respond_to?(:[])
             fetch_from_hash.call(source, source_name_param)
-          else nil
+          else
+            nil
           end
         end
         return nil unless _source
+        
         result = fetch_value.call(name, source_name, _source)
         if !result.nil? && (with = options[:with])
           with.shape(result, parent: self)
         elsif (each_with = options[:each_with])
           each_with.shape_collection(result, parent: self, sort_by: options[:sort_by])
-        else result
+        else
+          result
         end
       end
     end
