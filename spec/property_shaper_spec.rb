@@ -543,7 +543,7 @@ describe Shape::PropertyShaper do
 
   context 'with and each_with' do
     let(:children) { [{ name: 'Zoe' }, { name: 'Adam' }] }
-    let(:unsorted) { [{ name: 'Zoe' }, { name: 'Adam' }] } # reverse to test sort, if needed
+    let(:unsorted) { [{ name: 'Zoe' }, { name: 'Adam' }] }
     let(:source) { { child: { name: 'Charlie' } } }
     let(:instance_one) { ParentDecorator.new(source) }
     let(:instance_two) { ParentDecorator.new(children: children) }
