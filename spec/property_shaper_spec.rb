@@ -136,7 +136,7 @@ describe Shape::PropertyShaper do
         }
 
         it 'exposes and shapes each child element of the property with the provided decorator' do
-          expect(subject.children.map(&:name)).to eq([ 'Jimmy Smith', 'Jane Smith' ])
+          expect(subject.children.map(&:name)).to eq(['Jimmy Smith', 'Jane Smith'])
         end
       end
 
@@ -156,7 +156,7 @@ describe Shape::PropertyShaper do
           }
 
           it 'sorts, exposes, and shapes each child element of the property with the provided decorator' do
-            expect(subject.children.map(&:name)).to eq([ 'Jane Smith', 'Jimmy Smith' ])
+            expect(subject.children.map(&:name)).to eq(['Jane Smith', 'Jimmy Smith'])
           end
         end
       end
